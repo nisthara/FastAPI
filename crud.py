@@ -7,6 +7,7 @@ from fastapi import APIRouter
 from fastapi import FastAPI, Form
 import urllib
 engine=None
+
 #connection
 server = 'localhost,1433' # to specify an alternate port
 database = 'estdb' 
@@ -17,16 +18,12 @@ params = urllib.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
                                  "DATABASE=estdb;"
                                  "UID=sa;"
                                  "PWD=estuate@123")
+print(params)                                 
 engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(params))
+print("mssql+pyodbc:///?odbc_connect={}".format(params))
 connection=engine.connect()
-
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
-
-
-
-
-
 
 meta = MetaData()
 users= Table(
@@ -44,12 +41,11 @@ class User(BaseModel):
     name:str    
     email:str
     password:str
-    
-    
+      
 app =FastAPI()
 
-@app.post("/login/")
-async def login(server: str = Form(),database: str = Form(),username: str = Form(),password: str = Form()):
+@app.post("/login")
+async def login(server: str = Form() ,database: str = Form() ,username: str = Form(), password: str = Form() ):
     # server = server # to specify an alternate port
     # database = database 
     # username = username
@@ -64,8 +60,7 @@ async def login(server: str = Form(),database: str = Form(),username: str = Form
 
     # SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     # Base = declarative_base()
-
-    return {"username": username}
+    return {"connection": "achieved"}
 
 @app.get("/")
 async def read_data():
@@ -79,13 +74,9 @@ async def read_data(id:int):
        
 @app.post("/")
 async def write_data(user:User):
-        return connection.execute(users.insert().values(
-        id=user.id,
-        name=user.name,
-        email=user.email,
-        password=user.password))
-        return connection.execute(users.select()).fetchall()
-        return{"id":user.id,"name":user.name,"email":user.email,"password":user.password}
+        return [connection.execute(users.insert().values(id=user.id,name=user.name,email=user.email,password=user.password)),
+        connection.execute(users.select()).fetchall(),
+        {"message":"succesfull"}]
         
 @app.put("/{id}")
 async def update_data(id:int,user:User):
