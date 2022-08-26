@@ -21,4 +21,11 @@ KT session on SQLAlchemy(ORL-object relation mapping)
 Day-4:
 25-08-2022
 Learnig SQLAlchemy
+creation of a table in a database
+inserting values into table
+
+Day-5:
+26-08-2022
+binding FastAPI with the database using sql alchemy
+ 
  
