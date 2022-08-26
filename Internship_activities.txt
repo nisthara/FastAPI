@@ -27,5 +27,6 @@ inserting values into table
 Day-5:
 26-08-2022
 binding FastAPI with the database using sql alchemy
+crud operations on  database using FastAPI
  
  
