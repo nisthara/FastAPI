@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,HTTPException
 from pydantic import BaseModel, Field
 from uuid import UUID
 
@@ -29,3 +29,13 @@ def create_book():
 def create_book(book: Book):
     BOOKS.append(book)
     return book
+    
+def update_book(book_id: UUID, book: Book):
+    counter = 0
+    
+    for x in BOOKS:
+        counter += 1
+        if x.id == book_id:
+            BOOKS[counter - 1] = book
+            return BOOKS[counter-1]
+            

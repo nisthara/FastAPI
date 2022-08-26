@@ -79,3 +79,15 @@
         # return {"model_name": model_name, "message": "LeCNN all the images"}
 
     # return {"model_name": model_name, "message": "Have some residuals"}
+import urllib
+from sqlalchemy import create_engine
+
+server = 'localhost,1433' # to specify an alternate port
+database = 'estdb' 
+username = 'sa' 
+password = 'estuate@123'
+
+params = urllib.parse.quote_plus("'DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password")
+
+engine = create_engine("mssql+pyodbc:///?odbc_connect=%s" % params)
+conn = engine.connect()
