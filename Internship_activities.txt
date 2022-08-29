@@ -32,3 +32,4 @@ crud operations on  database using FastAPI
 Day-6:
 29-08-2022
 Basic relationship patters in sql alchemy
+KT sessin on SPARK framework

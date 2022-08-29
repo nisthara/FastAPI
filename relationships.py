@@ -1,8 +1,9 @@
 import urllib
-from sqlalchemy import create_engine, ForeignKey, Column, Integer, String
+from sqlalchemy import create_engine, ForeignKey, Column, Integer, String, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 Base = declarative_base()
@@ -12,6 +13,13 @@ params = urllib.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
                                  "UID=sa;"
                                  "PWD=estuate@123")
 engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(params))
+connection=engine.connect()
+
+class base(BaseModel):
+   id: int
+   name: str
+   address: str
+   email: str
 
 class Customer(Base):
    __tablename__ = 'customers'
@@ -31,7 +39,7 @@ class Invoice(Base):
    customer = relationship("Customer", back_populates = "invoices")
 
 @app.get("/connect")
-async def read():
+async def connect():
    return{"message":"connected"}
 
 @app.get("/create")
@@ -39,5 +47,4 @@ async def create():
    Customer.invoices = relationship("Invoice", order_by = Invoice.id, back_populates = "customer")
    Base.metadata.create_all(engine)
    return {"message":"relatonship created"}
-
 
