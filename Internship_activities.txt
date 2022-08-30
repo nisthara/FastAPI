@@ -39,4 +39,5 @@ Parqet files
 
 Day-7:
 Learning about SPARK in detail
+Creation of SPARK session and DataFormat
 Extracting the data from the database in the CSV format and converting it to a parquet file format
