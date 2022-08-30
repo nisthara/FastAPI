@@ -11,8 +11,9 @@ spark = SparkSession \
     .appName("Spark session") \
     .getOrCreate()
 
-df = pd.read_csv('exported_csv.csv')
-df.to_parquet('output.parquet')
+df = spark.read.option('header','true').csv('exported_csv.csv')
+df.show()
+
 # file = open(exported_csv.csv)
 # type(file)
 # csvreader = csv.reader(file)
