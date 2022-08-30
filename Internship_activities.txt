@@ -1,3 +1,4 @@
+Week-1:
 Day-1:
 22-08-2022:
 Introductory meetings
@@ -29,7 +30,13 @@ Day-5:
 binding FastAPI with the database using sql alchemy
 crud operations on  database using FastAPI
  
+Week-2:
 Day-6:
 29-08-2022
 Basic relationship patters in sql alchemy
 KT sessin on SPARK framework
+Parqet files
+
+Day-7:
+Learning about SPARK in detail
+ 
