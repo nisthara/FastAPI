@@ -28,7 +28,7 @@ params = urllib.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
                                  "UID=sa;"
                                  "PWD=estuate@123")
 engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(params))
-
+print("mssql+pyodbc:///?odbc_connect={}".format(params))
 class Customer(Base):
    __tablename__ = 'customers'
 
