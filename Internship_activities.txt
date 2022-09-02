@@ -47,3 +47,8 @@ Day-8:
 01-09-2022:
 Convertion of dataframe into parquet file 
 Retrival of data from the database and convertion of the same into a parquet file
+
+Day-9:
+02-09-2022:
+Microservice architecture 
+Working of microservice
