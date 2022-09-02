@@ -1,0 +1,22 @@
+Week-2:
+Day-6:
+29-08-2022
+Basic relationship patters in sql alchemy
+KT sessin on SPARK framework
+Parqet files
+
+Day-7:
+30-08-2022:
+Learning about SPARK in detail
+Creation of SPARK session and DataFormat
+Extracting the data from the database in the CSV format and converting it to a parquet file format
+
+Day-8:
+01-09-2022:
+Convertion of dataframe into parquet file 
+Retrival of data from the database and convertion of the same into a parquet file
+
+Day-9:
+02-09-2022:
+Microservice architecture 
+Working of microservice
