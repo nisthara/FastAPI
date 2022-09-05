@@ -42,8 +42,8 @@ spark = SparkSession \
     .appName("Spark session") \
     .getOrCreate()
 
-# df = spark.read.option('header','true').csv('exported_csv.csv')
-# df.show()
+df = spark.read.option('header','true').csv('exported_csv.csv')
+df.show()
 
 
 result = db.query(Employees).all()
