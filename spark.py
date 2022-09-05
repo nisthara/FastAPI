@@ -66,3 +66,19 @@ df.write.mode("overwrite").option('compression','snappy').parquet('exported_parq
 # csvreader = csv.reader(file)
 
 # file.close()
+
+
+
+
+
+
+
+
+
+
+
+# async def write_data(user:User):
+#         return [connection.execute(users.insert().values(id=user.id,name=user.name,email=user.email,password=user.password)),
+#         connection.execute(users.select()).fetchall(),
+#         {"message":"succesfull"}]
+        
