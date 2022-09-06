@@ -50,4 +50,4 @@ for tab in table:
         continue
     result = list(map(get_dict, result))
     df = spark.createDataFrame(result)
-    df.repartition(1).write.mode("overwrite").option("compression", "snappy").parquet(f"dest/{tab.__name__}")
+    df.repartition(1).write.mode("overwrite").option("compression", "snappy").parquet(f"destination/{tab.__name__}")
