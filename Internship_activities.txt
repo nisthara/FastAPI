@@ -57,3 +57,9 @@ Week-3:
 Day-10:
 05-09-2022:
 Extarction of data from multiple table in the datebase
+Retrival of table schema using ORM (sqlacodegen)
+
+Day-11:
+06-09-2022:
+Convertion of extracted data in the multiple tables of the database to parquet file 
+Creation of seperate parquet file in distinct locations for each table present in the database 
