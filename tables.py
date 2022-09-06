@@ -15,6 +15,22 @@ class Customers(Base):
     invoices = relationship('Invoices', back_populates='customers')
 
 
+class Departments(Base):
+    __tablename__ = 'departments'
+
+    deptid = Column(Integer, Identity(start=1, increment=1), primary_key=True)
+    deptName = Column(String)
+
+
+class Dependent(Base):
+    __tablename__ = 'dependent'
+
+    dependentid = Column(Integer, Identity(start=1, increment=1), primary_key=True)
+    name = Column(String(collation='SQL_Latin1_General_CP1_CI_AS'))
+    email = Column(String(collation='SQL_Latin1_General_CP1_CI_AS'))
+    age = Column(Integer)
+
+
 class Employees(Base):
     __tablename__ = 'employees'
 

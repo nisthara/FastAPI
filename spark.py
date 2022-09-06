@@ -3,17 +3,19 @@ from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.orm import sessionmaker, declarative_base 
 from pyspark.sql import SparkSession
 from sqlalchemy.inspection import inspect
+import tables
 import sys
 import os
 import urllib
-
 params = urllib.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
                                  "SERVER=localhost;"
                                  "DATABASE=estdb;"
                                  "UID=sa;"
                                  "PWD=estuate@123")
 engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(params))
+print("mssql+pyodbc:///?odbc_connect={}".format(params))
 conn = engine.connect()
+tables.Base.metadata.create_all(engine)
 Base = declarative_base()
 SessionLocal = sessionmaker(bind=engine)
 
