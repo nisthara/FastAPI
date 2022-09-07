@@ -63,3 +63,8 @@ Day-11:
 06-09-2022:
 Convertion of extracted data in the multiple tables of the database to parquet file 
 Creation of seperate parquet file in distinct locations for each table present in the database 
+
+Day-12:
+07-09-2022:
+Creation of functions for each operations like retrival of schemas, tables and columns from the database
+Creation of FastAPI for the sames
