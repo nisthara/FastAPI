@@ -2,8 +2,6 @@ from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from pydantic import BaseModel
-from fastapi import FastAPI
-from pydantic import BaseModel
 from fastapi import FastAPI, Form
 import urllib
 engine=None
