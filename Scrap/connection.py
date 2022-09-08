@@ -28,7 +28,8 @@ async def connect(details: DBInfo):
                                     f"PWD={details.password}")
     conn_string = f"{details.database_name}+{dialect}://{details.username}:{details.password}@{details.ip_address}:{details.port_number}/{details.schema_name}"
     global connection_details
-    engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(params))
+    engine = create_engine("{}+{}:///?odbc_connect={}".format(details.database_name,dialect, params))
+    print("{}+{}:///?odbc_connect={}".format(details.database_name,dialect, params))
     connection_details = details
     try:
         engine.connect()
