@@ -67,4 +67,8 @@ Creation of seperate parquet file in distinct locations for each table present i
 Day-12:
 07-09-2022:
 Creation of functions for each operations like retrival of schemas, tables and columns from the database
-Creation of FastAPI for the sames
+Creation of FastAPI for the same
+
+Day-13:
+08-09-2022:
+Creation of connection to database via FastAPI using the credentials given by the user
