@@ -63,8 +63,7 @@ async def login(server: str = Form() ,database: str = Form() ,username: str = Fo
 @app.get("/")
 async def read_data():
     stmt = users.select()
-    return connection.execute(stmt).fetchall()
-    pass 
+    return connection.execute(stmt).fetchall() 
     
 @app.get("/{id}")
 async def read_data(id:int):

@@ -1,20 +1,25 @@
-from functools import wraps
-from json import load
-import os
 import inspect
+import os
+import urllib
+import tables
 import sys
+import connection
+from connection import engine
+from fastapi import FastAPI, Form
 from sqlalchemy import create_engine, inspect as inspect_engine
 from sqlalchemy.orm import sessionmaker, decl_api
 from pyspark.sql import SparkSession
-import tables
-import urllib
+
+app = FastAPI()
+
+app.include_router(connection.router)
 
 #connection
 params = urllib.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
-                                 "SERVER=localhost;"
-                                 "DATABASE=estdb;"
-                                 "UID=sa;"
-                                 "PWD=estuate@123")
+                                     "SERVER=localhost;"
+                                     "DATABASE=estdb;"
+                                     "UID=sa;"
+                                     "PWD=estuate@123")
 engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(params))
 conn = engine.connect()
 tables.Base.metadata.create_all(engine)
@@ -36,35 +41,36 @@ def get_dict(obj: tables.Base):
     del fields["_sa_instance_state"]
     return fields
 
-#table object retrival from tables.py module
+#creating a table instance
 table = [cls_obj for cls_name, cls_obj in inspect.getmembers(sys.modules["tables"]) if inspect.isclass(
     cls_obj) and isinstance(cls_obj, decl_api.DeclarativeMeta) and cls_obj.__name__ != "Base"]
 
-# #writing to parquet
-# for tab in table:
-#     print("---------------------------------------------------------------------")
-#     print("                         ", tab.__name__)
-#     print("---------------------------------------------------------------------")
-#     result = db.query(tab).all()
-#     if not result:
-#         continue
-#     result = list(map(get_dict, result))
-#     df = spark.createDataFrame(result)
-#     df.repartition(1).write.mode("overwrite").option("compression", "snappy").parquet(f"destination/{tab.__name__}")
+#connection to database
+@app.get("/")
+@connection.connection_required
+def index():
+    return {"detail": "Hello World"}
 
 #retriving schemas
-inspector = inspect_engine(engine)
-result = inspector.get_schema_names()
-print(result)
+@app.get('/schema_name')
+def get_schema():
+    inspector = inspect_engine(engine)
+    schema_name = inspector.get_schema_names()
+    return schema_name
 
 #retriving table names
-inspector =  inspect_engine(engine)
-table_name = inspector.get_table_names()
-print(table_name)
+@app.get('/table_name')
+def get_table():
+    inspector =  inspect_engine(engine)
+    table_name = inspector.get_table_names()
+    return table_name
 
-#retriving column name
-#def get_column_name(table):
-for tab in table:
+#retriving columns
+@app.get('/{table}')
+def get_columns(table:str):
     inspector = inspect_engine(engine)
-    col_name = inspector.get_columns(tab.__name__)
-    print(col_name)
+    col_name = inspector.get_columns(table)
+    return col_name
+
+#creating a data frame and converting it into parquet files at  
+#distinct destinations for each table that is present in the datebase 
