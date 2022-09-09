@@ -1,4 +1,5 @@
 from pydantic import BaseModel 
+from typing import Union
 
 class DBInfo(BaseModel):
     database_name:str
