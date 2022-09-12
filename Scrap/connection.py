@@ -22,16 +22,16 @@ async def connect(details: DBInfo):
                                     f"DATABASE={details.schema_name};"
                                     f"UID={details.username};"
                                     f"PWD={details.password}")
-    engine = create_engine("{}+{}:///?odbc_connect={}".format(details.database_name,dialect, params))
-    config.engine = engine
-    config.connection_details = details
+    
     print("{}+{}:///?odbc_connect={}".format(details.database_name,dialect, params))
     try:
+        engine = create_engine("{}+{}:///?odbc_connect={}".format(details.database_name,dialect, params))
+        config.engine = engine
+        config.connection_details = details
         config.engine.connect()
         return {"msg": "Connection successful"}
-    except:
-        return {"msg": "Wrong or missing Credentials"}
-
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"{e}")
 
 # A decorator to check if a connection exists before calling the passed function
 def connection_required(func : Callable) -> Callable:
