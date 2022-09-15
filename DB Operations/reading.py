@@ -8,7 +8,7 @@ def read_file(path:str):
     spark = SparkSession.builder.appName("Parquet Reader").getOrCreate()
     try:
         df = spark.read.parquet(sys.argv[1])
-        df.show()
+        df.show(45)
         df.printSchema()
         print("The total number of columns read form the archive : ", len(df.columns))
         print("The total number of rows read form the archive : ", df.count())

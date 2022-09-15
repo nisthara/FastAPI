@@ -93,4 +93,5 @@ Meeting with the leaders
 
 Day-18:
 15-09-2022:
-Reading 
+Reading parquet file and retrival of the data in the table format
+Demo of the project to the manager of the organization

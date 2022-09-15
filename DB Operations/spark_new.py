@@ -70,16 +70,18 @@ def get_columns(table:str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"{e}")
     return {"message" : "No such table exists"}
-#
+
+#archiving the tables in the schema
 @app.post('/archive_table')
 @connection.connection_required
 def archive(schemas:List[str], table:List[str]=[]):
     parquet.create_parquet(config.engine, schemas, table)
     return {"message":"done"}
-#
+
+#archiving the schemas in the database
 @app.post('/archive_schema')
 @connection.connection_required
-def archive(schemas:List[str]):
-    parquet.create_parquet(config.engine, schemas)
+def archive(schemas:List[str],compression:str):
+    parquet.create_parquet(config.engine, schemas, compression)
     return {"message":"done"}
 
