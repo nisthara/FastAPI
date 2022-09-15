@@ -78,4 +78,19 @@ Day-14:
 Creation of FastAPI to archive schemas and tables
 
 Week-4:
+Day-15:
 12-09-2022:
+Error handling (Raising Exceptions)
+
+Day-16:
+13-09-2022:
+Error handling in archive of schemas and tables
+
+Day-17:
+14-09-2022:
+Retrival and archive using schemas
+Meeting with the leaders
+
+Day-18:
+15-09-2022:
+Reading 

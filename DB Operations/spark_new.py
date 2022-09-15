@@ -1,30 +1,16 @@
-import inspect
-import os
-import urllib
-import tables
-import sys
-import connection
-from connection import engine
-from fastapi import FastAPI, Form
+import inspect, os, tables, sys, parquet, connection
+from typing import List
+from fastapi import FastAPI, HTTPException
+from config import config
 from sqlalchemy import create_engine, inspect as inspect_engine
-from sqlalchemy.orm import sessionmaker, decl_api
+from sqlalchemy.orm import decl_api
 from pyspark.sql import SparkSession
+
+#connection
 
 app = FastAPI()
 
 app.include_router(connection.router)
-
-#connection
-params = urllib.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
-                                     "SERVER=localhost;"
-                                     "DATABASE=estdb;"
-                                     "UID=sa;"
-                                     "PWD=estuate@123")
-engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(params))
-conn = engine.connect()
-tables.Base.metadata.create_all(engine)
-SessionLocal = sessionmaker(bind=engine)
-db = SessionLocal()
 
 #spark credentials
 os.environ["spark_home"] = "C:\\Users\\Nisthara\\myenv\\spark-3.2.2-bin-hadoop3.2"
@@ -53,24 +39,47 @@ def index():
 
 #retriving schemas
 @app.get('/schema_name')
+@connection.connection_required
 def get_schema():
-    inspector = inspect_engine(engine)
+    inspector = inspect_engine(config.engine)
     schema_name = inspector.get_schema_names()
     return schema_name
 
 #retriving table names
 @app.get('/table_name')
-def get_table():
-    inspector =  inspect_engine(engine)
-    table_name = inspector.get_table_names()
+@connection.connection_required
+def get_table(schema:str):
+    inspector =  inspect_engine(config.engine)
+    table_name = inspector.get_table_names(schema)
+    if not table_name:
+        raise HTTPException(status_code=404, detail=f"No such schema found : {schema}")
     return table_name
 
-#retriving columns
+#retriving columns 
 @app.get('/{table}')
+@connection.connection_required
 def get_columns(table:str):
-    inspector = inspect_engine(engine)
-    col_name = inspector.get_columns(table)
-    return col_name
+    try:
+        inspector = inspect_engine(config.engine)
+        col_name = inspector.get_columns(table)
+        result = {}
+        for row in col_name:
+            result[row["name"]] = f'{row["type"]}'
+        if result:
+            return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"{e}")
+    return {"message" : "No such table exists"}
+#
+@app.post('/archive_table')
+@connection.connection_required
+def archive(schemas:List[str], table:List[str]=[]):
+    parquet.create_parquet(config.engine, schemas, table)
+    return {"message":"done"}
+#
+@app.post('/archive_schema')
+@connection.connection_required
+def archive(schemas:List[str]):
+    parquet.create_parquet(config.engine, schemas)
+    return {"message":"done"}
 
-#creating a data frame and converting it into parquet files at  
-#distinct destinations for each table that is present in the datebase 
